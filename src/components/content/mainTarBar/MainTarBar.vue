@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import TarBar from "../common/tarbar/TarBar.vue";
-import TarBarItem from "../common/tarbar/TarBarItem.vue";
+import TarBar from "../../common/tarbar/TarBar.vue";
+import TarBarItem from "../../common/tarbar/TarBarItem.vue";
 export default {
   name: "MainTarBar",
   components: { TarBar, TarBarItem },

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import MainTarBar from "components/content/MainTarBar";
+import MainTarBar from "components/content/mainTarBar/MainTarBar";
 
 export default {
   name: "App",

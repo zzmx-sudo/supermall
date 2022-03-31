@@ -9,5 +9,16 @@ module.exports = {
         'views': '@/views',
       }
     }
+  },
+  devServer: {
+    proxy: {
+      "/api": {
+        changeOrigin: true,
+        target: "http://119.91.232.180:8920",
+        pathRewrite: {
+          "^/api": ""
+        }
+      }
+    }
   }
 }

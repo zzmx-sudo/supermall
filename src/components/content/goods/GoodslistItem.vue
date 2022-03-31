@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-    <img :src="goodsItem.show.img" />
+  <div class="goods-item" @click="ItemClick">
+    <img :src="goodsItem.show.img" @load="imageLoad" />
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">{{ goodsItem.price }}</span>
@@ -10,9 +10,7 @@
 </template>
 
 <script>
-import App from "../../../App.vue";
 export default {
-  components: { App },
   name: "GoodslistItem",
   props: {
     goodsItem: {
@@ -20,6 +18,14 @@ export default {
       default() {
         return {};
       },
+    },
+  },
+  methods: {
+    imageLoad() {
+      this.$bus.$emit("itemImageLoad");
+    },
+    ItemClick() {
+      this.$router.push("/detail/" + this.goodsItem.iid);
     },
   },
 };

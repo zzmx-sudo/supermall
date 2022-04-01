@@ -50,6 +50,7 @@ import HomeRecommendView from "./childComps/HomeRecommendView";
 import FeatureViews from "./childComps/FeatureViews";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
+import { debounce } from "@/utils";
 
 export default {
   name: "Home",
@@ -107,7 +108,7 @@ export default {
   },
   mounted() {
     // 1.监听item中图片加载完成
-    const refresh = this.debounce(this.$refs.scroll.refresh, 300);
+    const refresh = debounce(this.$refs.scroll.refresh, 300);
 
     this.$bus.$on("itemImageLoad", () => {
       refresh();
@@ -121,16 +122,16 @@ export default {
     },
 
     // 防抖函数
-    debounce(func, delay) {
-      let time = null;
-      return function (...args) {
-        // 如果time存在（表示上次setTimeout函数未到执行时间）则清除计时器
-        if (time) clearTimeout(time);
-        time = setTimeout(() => {
-          func.apply(this, args);
-        }, delay);
-      };
-    },
+    // debounce(func, delay) {
+    //   let time = null;
+    //   return function (...args) {
+    //     // 如果time存在（表示上次setTimeout函数未到执行时间）则清除计时器
+    //     if (time) clearTimeout(time);
+    //     time = setTimeout(() => {
+    //       func.apply(this, args);
+    //     }, delay);
+    //   };
+    // },
     tabClick(index) {
       switch (index) {
         case 0:

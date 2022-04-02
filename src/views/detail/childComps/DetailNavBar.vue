@@ -42,11 +42,11 @@ export default {
 <style scoped>
 .title {
   display: flex;
-  font-size: 15px;
 }
 
 .title-item {
   flex: 1;
+  font-size: 14px;
 }
 
 .active {

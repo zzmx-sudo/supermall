@@ -6,7 +6,7 @@
       :key="index"
     >
       <tr v-for="(tr, indey) in table" :key="indey">
-        <td v-for="(td, indez) in tr" :key="td">{{ td }}</td>
+        <td v-for="(td, indez) in tr" :key="indez">{{ td }}</td>
       </tr>
     </table>
     <table class="info-param">

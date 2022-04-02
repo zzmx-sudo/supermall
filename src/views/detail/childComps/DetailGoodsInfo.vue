@@ -13,6 +13,7 @@
         :src="item"
         @load="imageLoad"
       />
+      />
     </div>
   </div>
 </template>
@@ -100,5 +101,6 @@ export default {
 
 .info-list img {
   width: 100%;
+  height: auto;
 }
 </style>

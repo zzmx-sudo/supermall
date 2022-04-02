@@ -50,7 +50,7 @@ import HomeRecommendView from "./childComps/HomeRecommendView";
 import FeatureViews from "./childComps/FeatureViews";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "@/utils";
+import { debounce } from "@/common/utils";
 
 export default {
   name: "Home",

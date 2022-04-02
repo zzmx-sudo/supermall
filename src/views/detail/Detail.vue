@@ -1,7 +1,7 @@
 <template>
   <div id="detail">
     <detail-nav-bar class="detail-nav"></detail-nav-bar>
-    <scroll :probe-type="3" :pull-up-load="false" class="content" ref="scroll">
+    <scroll :probe-type="3" class="content" ref="detailscroll">
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :top-infos="topInfos"></detail-base-info>
       <detail-shop-info :shop-info="shopInfo"></detail-shop-info>
@@ -10,6 +10,7 @@
         @goodsImageLoad="goodsImageLoad"
       ></detail-goods-info>
       <detail-param-info :paramInfo="paramInfo"></detail-param-info>
+      <detail-comment-info :comment-info="commentInfo"></detail-comment-info>
     </scroll>
   </div>
 </template>
@@ -21,6 +22,7 @@ import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
+import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
 import Scroll from "components/common/scroll/Scroll";
 
@@ -35,6 +37,7 @@ export default {
     DetailShopInfo,
     DetailGoodsInfo,
     DetailParamInfo,
+    DetailCommentInfo,
     Scroll,
   },
   data() {
@@ -45,6 +48,7 @@ export default {
       shopInfo: {},
       detailInfo: {},
       paramInfo: {},
+      commentInfo: {},
     };
   },
   created() {
@@ -74,12 +78,16 @@ export default {
         data.itemParams.info,
         data.itemParams.rule
       );
+
+      // 6.获取评论信息
+      this.commentInfo = data.rate.cRate !== 0 ? data.rate.list[0] : {};
     });
   },
   methods: {
     /* 事件监听相关方法 */
     goodsImageLoad() {
-      this.$refs.scroll.refresh();
+      this.$refs.detailscroll.refresh();
+      console.log(this.$refs.detailscroll.scroll.maxScrollY);
     },
   },
 };
@@ -97,7 +105,10 @@ export default {
   height: calc(100% - 44px);
   overflow: hidden;
   position: absolute;
-  /* top: 44px; */
+  top: 44px;
+  bottom: 60px;
+  left: 0;
+  right: 0%;
 }
 
 .detail-nav {

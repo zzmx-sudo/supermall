@@ -6,6 +6,12 @@ export function getDetail(goodsId) {
   })
 }
 
+export function getRecommend() {
+  return request({
+    url: "/recommend"
+  })
+}
+
 export class Goods {
   constructor(itemInfo, columns, services) {
     this.title = itemInfo.title

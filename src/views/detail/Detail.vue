@@ -11,6 +11,7 @@
       ></detail-goods-info>
       <detail-param-info :paramInfo="paramInfo"></detail-param-info>
       <detail-comment-info :comment-info="commentInfo"></detail-comment-info>
+      <goodslist :goods="recommendInfos"></goodslist>
     </scroll>
   </div>
 </template>
@@ -25,8 +26,15 @@ import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
 import Scroll from "components/common/scroll/Scroll";
+import Goodslist from "../../components/content/goods/Goodslist";
 
-import { getDetail, Goods, Shop, GoodsParam } from "network/detail";
+import {
+  getDetail,
+  getRecommend,
+  Goods,
+  Shop,
+  GoodsParam,
+} from "network/detail";
 
 export default {
   name: "Detail",
@@ -39,6 +47,7 @@ export default {
     DetailParamInfo,
     DetailCommentInfo,
     Scroll,
+    Goodslist,
   },
   data() {
     return {
@@ -49,6 +58,7 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: {},
+      recommendInfos: [],
     };
   },
   created() {
@@ -82,12 +92,17 @@ export default {
       // 6.获取评论信息
       this.commentInfo = data.rate.cRate !== 0 ? data.rate.list[0] : {};
     });
+
+    /* 获取推荐商品数据 */
+    getRecommend().then((result) => {
+      this.recommendInfos = result.data.list;
+    });
   },
   methods: {
     /* 事件监听相关方法 */
     goodsImageLoad() {
       this.$refs.detailscroll.refresh();
-      console.log(this.$refs.detailscroll.scroll.maxScrollY);
+      // console.log(this.$refs.detailscroll.scroll.maxScrollY);
     },
   },
 };

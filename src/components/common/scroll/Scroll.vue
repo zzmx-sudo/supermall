@@ -1,6 +1,8 @@
 <template>
-  <div class="wrapper" ref="wrapper">
-    <div><slot></slot></div>
+  <div ref="wrapper">
+    <div class="content">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -67,7 +69,7 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
+/* .wrapper {
   height: 100%;
-}
+} */
 </style>

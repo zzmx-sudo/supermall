@@ -13,7 +13,6 @@
         :src="item"
         @load="imageLoad"
       />
-      />
     </div>
   </div>
 </template>

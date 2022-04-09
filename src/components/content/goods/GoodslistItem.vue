@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "GoodslistItem",
+  name: "GoodsListItem",
   props: {
     goodsItem: {
       type: Object,
@@ -25,7 +25,9 @@ export default {
       this.$bus.$emit("itemImageLoad");
     },
     ItemClick() {
-      this.$router.push("/detail/" + this.goodsItem.iid);
+      this.$router.push(
+        "/detail/" + this.goodsItem.iid || this.goodsItem.item_id
+      );
     },
   },
   computed: {
@@ -36,7 +38,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .goods-item {
   padding-bottom: 40px;
   position: relative;
@@ -45,7 +47,8 @@ export default {
 
 .goods-item img {
   width: 100%;
-  border-radius: 5px;
+  border-radius: 10px;
+  height: 100%;
 }
 
 .goods-info {
@@ -78,7 +81,7 @@ export default {
   content: "";
   position: absolute;
   left: -15px;
-  top: -1px;
+  top: 0;
   width: 14px;
   height: 14px;
   background: url("~assets/img/common/collect.svg") 0 0/14px 14px;

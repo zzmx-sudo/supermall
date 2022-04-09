@@ -37,27 +37,26 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .tab-control {
   display: flex;
+  top: -1px;
   text-align: center;
-  font-size: 15px;
-  height: 42px;
+  height: 40px;
   line-height: 40px;
+  font-size: 14px;
   background-color: #fff;
-  z-index: 9;
 }
-
 .tab-control-item {
   flex: 1;
 }
-
-.active {
-  color: var(--color-tint);
+.tab-control-item span {
+  padding: 4px;
 }
-
+.active {
+  color: var(--color-high-text);
+}
 .active span {
-  padding: 5px;
-  border-bottom: 2px solid var(--color-tint);
+  border-bottom: 3px solid var(--color-high-text);
 }
 </style>

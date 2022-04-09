@@ -23,20 +23,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .recommend {
   display: flex;
-  width: 100%;
   text-align: center;
   font-size: 12px;
-  padding: 10px 0 20px;
-  border-bottom: 8px solid #eeee;
+  padding: 5px 0px;
+  border-bottom: 8px #eeeeee solid;
+  width: 100%;
 }
-
 .recommend-item {
   flex: 1;
 }
-
 .recommend-item img {
   width: 70px;
   height: 70px;

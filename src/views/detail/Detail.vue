@@ -1,7 +1,11 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav"></detail-nav-bar>
-    <scroll :probe-type="3" class="content" ref="detailscroll">
+    <detail-nav-bar
+      class="detail-nav"
+      @titleClick="titleClick"
+      :navbar-index="navBarIndex"
+    ></detail-nav-bar>
+    <scroll :probe-type="3" class="content" ref="scroll" @scroll="DetailScroll">
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :top-infos="topInfos"></detail-base-info>
       <detail-shop-info :shop-info="shopInfo"></detail-shop-info>
@@ -9,10 +13,15 @@
         :detailInfo="detailInfo"
         @goodsImageLoad="goodsImageLoad"
       ></detail-goods-info>
-      <detail-param-info :paramInfo="paramInfo"></detail-param-info>
-      <detail-comment-info :comment-info="commentInfo"></detail-comment-info>
-      <goodslist :goods="recommendInfos"></goodslist>
+      <detail-param-info :paramInfo="paramInfo" ref="param"></detail-param-info>
+      <detail-comment-info
+        :comment-info="commentInfo"
+        ref="comment"
+      ></detail-comment-info>
+      <goods-list :goods="recommendInfos" ref="recommend"></goods-list>
     </scroll>
+    <detail-bottom-bar></detail-bottom-bar>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -24,9 +33,11 @@ import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
+import DetailBottomBar from "./childComps/DetailBottomBar";
 
 import Scroll from "components/common/scroll/Scroll";
-import Goodslist from "../../components/content/goods/Goodslist";
+import GoodsList from "components/content/goods/GoodsList";
+import BackTop from "components/content/backTop/BackTop";
 
 import {
   getDetail,
@@ -35,6 +46,7 @@ import {
   Shop,
   GoodsParam,
 } from "network/detail";
+import { itemListenerMixin } from "@/common/mixin";
 
 export default {
   name: "Detail",
@@ -46,8 +58,11 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    DetailBottomBar,
+
     Scroll,
-    Goodslist,
+    GoodsList,
+    BackTop,
   },
   data() {
     return {
@@ -59,8 +74,15 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommendInfos: [],
+      // 监听itemImageLoad事件后调用的函数
+      imageLoadCal: null,
+      themeTops: [],
+      navBarIndex: 0,
+      // 定义属性用于判断backTop是否显示
+      isShowBackTop: false,
     };
   },
+  mixins: [itemListenerMixin],
   created() {
     // 保存传入的商品id
     this.goodsId = this.$route.params.goodsId;
@@ -91,6 +113,15 @@ export default {
 
       // 6.获取评论信息
       this.commentInfo = data.rate.cRate !== 0 ? data.rate.list[0] : {};
+
+      // 上述各子组件获取到数据并且DOM渲染完成后才会调用该函数(图片不一定加载完成)
+      // this.$nextTick(() => {
+      //   // 获取各title位置的offsetTop
+      //   this.themeTops[0] = 0;
+      //   this.themeTops.push(this.$refs.param.$el.offsetTop);
+      //   this.themeTops.push(this.$refs.comment.$el.offsetTop);
+      //   this.themeTops.push(this.$refs.recommend.$el.offsetTop);
+      // });
     });
 
     /* 获取推荐商品数据 */
@@ -98,12 +129,59 @@ export default {
       this.recommendInfos = result.data.list;
     });
   },
+  mounted() {},
+  updated() {
+    // this.themeTops = [];
+    // // 获取各title位置的offsetTop
+    // this.themeTops[0] = 0;
+    // this.themeTops.push(this.$refs.param.$el.offsetTop);
+    // this.themeTops.push(this.$refs.comment.$el.offsetTop);
+    // this.themeTops.push(this.$refs.recommend.$el.offsetTop);
+  },
   methods: {
     /* 事件监听相关方法 */
+    // 监听图片加载完成
     goodsImageLoad() {
-      this.$refs.detailscroll.refresh();
-      // console.log(this.$refs.detailscroll.scroll.maxScrollY);
+      this.$refs.scroll.refresh();
+      // console.log(this.$refs.scroll.scroll.maxScrollY);
+      this.themeTops[0] = 0;
+      this.themeTops.push(this.$refs.param.$el.offsetTop);
+      this.themeTops.push(this.$refs.comment.$el.offsetTop);
+      this.themeTops.push(this.$refs.recommend.$el.offsetTop);
+
+      // console.log(this.themeTops);
     },
+
+    // 监听顶部标题点击
+    titleClick(index) {
+      // console.log(index);
+      this.navBarIndex = index;
+      this.$refs.scroll.scrollTo(0, -this.themeTops[index], 200);
+    },
+
+    // 滚动到顶部
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0, 500);
+    },
+
+    // 监听scroll滚动方法
+    DetailScroll(position) {
+      const positionY = -position.y;
+      if (positionY < this.themeTops[1]) {
+        this.navBarIndex = 0;
+      } else if (positionY < this.themeTops[2]) {
+        this.navBarIndex = 1;
+      } else if (positionY < this.themeTops[3]) {
+        this.navBarIndex = 2;
+      } else {
+        this.navBarIndex = 3;
+      }
+
+      this.isShowBackTop = positionY > 1000;
+    },
+  },
+  destroyed() {
+    this.$bus.$off("itemImageLoad", this.imageLoadCal);
   },
 };
 </script>
@@ -117,11 +195,11 @@ export default {
 }
 
 .content {
-  height: calc(100% - 44px);
+  height: calc(100% - 102px);
   overflow: hidden;
   position: absolute;
   top: 44px;
-  bottom: 60px;
+  bottom: 58px;
   left: 0;
   right: 0%;
 }

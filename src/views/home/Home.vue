@@ -32,7 +32,7 @@
         :titles="['流行', '新款', '精选']"
         @tarClick="tabClick"
       ></tab-control>
-      <goodslist :goods="typeGoods"></goodslist>
+      <goods-list :goods="typeGoods"></goods-list>
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
@@ -41,7 +41,7 @@
 <script>
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
-import Goodslist from "components/content/goods/Goodslist";
+import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
 import BackTop from "components/content/backTop/BackTop";
 
@@ -50,14 +50,14 @@ import HomeRecommendView from "./childComps/HomeRecommendView";
 import FeatureViews from "./childComps/FeatureViews";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "@/common/utils";
+import { itemListenerMixin } from "@/common/mixin";
 
 export default {
   name: "Home",
   components: {
     NavBar,
     TabControl,
-    Goodslist,
+    GoodsList,
     Scroll,
     BackTop,
     HomeSwiper,
@@ -80,22 +80,27 @@ export default {
       isTabCopyShow: false,
       // 定义属性用于保存home路由滚动的y轴位置
       saveY: 0,
+      // 监听itemImageLoad事件后调用的函数
+      imageLoadCal: null,
     };
   },
+  mixins: [itemListenerMixin],
   computed: {
     typeGoods() {
       return this.goods[this.currentType].list;
     },
   },
   activated() {
-    // time传入0,瞬间滚动到指定位置
-    this.$refs.scroll.scrollTo(0, this.saveY, 0);
     // 记得刷新一次滚动
     this.$refs.scroll.refresh();
+    // time传入0,瞬间滚动到指定位置
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
   },
   deactivated() {
     // this.saveY = this.$refs.scroll.scroll.y;
     this.saveY = this.$refs.scroll.getScrollY();
+    // 取消对itemImageLoad事件的监听
+    this.$bus.$off("itemImageLoad", this.imageLoadCal);
   },
   created() {
     // 1.请求多个数据
@@ -105,14 +110,6 @@ export default {
     this.getGoods("pop");
     this.getGoods("new");
     this.getGoods("sell");
-  },
-  mounted() {
-    // 1.监听item中图片加载完成
-    const refresh = debounce(this.$refs.scroll.refresh, 300);
-
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
   },
   methods: {
     /* 事件监听相关方法 */
@@ -197,22 +194,18 @@ export default {
   height: 100vh;
   position: relative;
 }
-
 .home-nav {
   background-color: var(--color-tint);
   color: white;
-
   /* position: fixed; */
   /* left: 0;
   right: 0;
   top: 0;
   z-index: 9; */
 }
-
 .content {
   height: calc(100% - 93px);
   /* margin-top: 44px; */
-
   overflow: hidden;
   position: absolute;
   top: 44px;
@@ -220,7 +213,6 @@ export default {
   /* left: 0; */
   /* right: 0; */
 }
-
 .tab-control {
   position: relative;
   z-index: 9;

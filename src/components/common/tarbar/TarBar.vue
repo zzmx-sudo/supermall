@@ -1,12 +1,12 @@
 <template>
-  <div id="tar-bar">
+  <div id="tab-bar">
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TarBar",
+  name: "TabBar",
 };
 </script>
 
@@ -29,3 +29,5 @@ export default {
   text-align: center;
 }
 </style>
+
+

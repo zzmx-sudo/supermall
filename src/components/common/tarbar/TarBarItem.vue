@@ -1,36 +1,33 @@
 <template>
-  <div class="tar-bar-item" @click="itemClick">
-    <div v-if="!isActivate">
-      <slot name="item-icon"></slot>
+  <div id="tab-bar-item" @click="itemClick">
+    <div class="item-icon" v-show="!isActive"><slot name="icon"></slot></div>
+    <div class="item-active-icon" v-show="isActive">
+      <slot name="active-icon"></slot>
     </div>
-    <div v-else>
-      <slot name="item-active-icon"></slot>
-    </div>
-    <div :style="activateStyle"><slot name="item-text"></slot></div>
+    <div class="item-text" :style="activeStyle"><slot name="text"></slot></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TarBarItem",
+  name: "TabBarItem",
   props: {
-    path: String,
-    activateColor: {
+    link: {
       type: String,
-      default: "red",
+      required: true,
     },
   },
   computed: {
-    isActivate() {
-      return this.$route.path.indexOf(this.path) !== -1;
+    isActive() {
+      return this.$route.path.indexOf(this.link) !== -1;
     },
-    activateStyle() {
-      return this.isActivate ? { color: this.activateColor } : {};
+    activeStyle() {
+      return this.isActive ? { color: "red" } : {};
     },
   },
   methods: {
     itemClick() {
-      this.$router.replace(this.path);
+      this.$router.replace(this.link);
     },
   },
 };

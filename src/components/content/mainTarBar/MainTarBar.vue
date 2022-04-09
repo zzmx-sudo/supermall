@@ -1,43 +1,46 @@
 <template>
-  <tar-bar>
-    <tar-bar-item path="/home" activateColor="red">
-      <img src="~assets/img/tarbar/shouye.png" slot="item-icon" />
+  <tab-bar>
+    <tab-bar-item link="/home">
+      <img slot="icon" src="~assets/img/tabbar/home.svg" alt="" />
+      <img slot="active-icon" src="~assets/img/tabbar/home_active.svg" alt="" />
+      <div slot="text">首页</div>
+    </tab-bar-item>
+    <tab-bar-item link="/category">
+      <img slot="icon" src="~assets/img/tabbar/category.svg" alt="" />
       <img
-        src="~assets/img/tarbar/shouyeactive.png"
-        slot="item-icon-activate"
+        slot="active-icon"
+        src="~assets/img/tabbar/category_active.svg"
+        alt=""
       />
-      <div slot="item-text">首页</div>
-    </tar-bar-item>
-    <tar-bar-item path="/category" activateColor="red">
-      <img src="~assets/img/tarbar/fenlei.png" slot="item-icon" />
+      <div slot="text">分类</div>
+    </tab-bar-item>
+    <tab-bar-item link="/cart">
+      <img slot="icon" src="~assets/img/tabbar/cart.svg" alt="" />
+      <img slot="active-icon" src="~assets/img/tabbar/cart_active.svg" alt="" />
+      <div slot="text">购物车</div>
+    </tab-bar-item>
+    <tab-bar-item link="/profile">
+      <img slot="icon" src="~assets/img/tabbar/profile.svg" alt="" />
       <img
-        src="~assets/img/tarbar/fenleiactive.png"
-        slot="item-icon-activate"
+        slot="active-icon"
+        src="~assets/img/tabbar/profile_active.svg"
+        alt=""
       />
-      <div slot="item-text">分类</div>
-    </tar-bar-item>
-    <tar-bar-item path="/cart" activateColor="red">
-      <img src="~assets/img/tarbar/gouwuche.png" slot="item-icon" />
-      <img
-        src="~assets/img/tarbar/gouwucheactive.png"
-        slot="item-icon-activate"
-      />
-      <div slot="item-text">购物车</div>
-    </tar-bar-item>
-    <tar-bar-item path="/profile" activateColor="red">
-      <img src="~assets/img/tarbar/wode.png" slot="item-icon" />
-      <img src="~assets/img/tarbar/wodeactive.png" slot="item-icon-activate" />
-      <div slot="item-text">首页</div>
-    </tar-bar-item>
-  </tar-bar>
+      <div slot="text">我的</div>
+    </tab-bar-item>
+  </tab-bar>
 </template>
 
 <script>
-import TarBar from "../../common/tarbar/TarBar.vue";
-import TarBarItem from "../../common/tarbar/TarBarItem.vue";
+import TabBar from "components/common/tarbar/TarBar";
+import TabBarItem from "components/common/tarbar/TarBarItem";
+
 export default {
-  name: "MainTarBar",
-  components: { TarBar, TarBarItem },
+  name: "MainTabBar",
+  components: {
+    TabBar,
+    TabBarItem,
+  },
 };
 </script>
 

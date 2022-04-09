@@ -8,7 +8,7 @@
         v-if="topInfos.desc"
         class="discount"
         :style="{ 'background-color': topInfos.desccolor }"
-        >{{ topInfos.desc }}</span
+        >{{ topInfos.discountDesc }}</span
       >
     </div>
     <div class="info-other">

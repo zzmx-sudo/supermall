@@ -182,7 +182,7 @@ export default {
 
     // 加入购物车
     addToCart() {
-      console.log("添加商品到购物车,goodsId:" + this.goodsId);
+      // console.log("添加商品到购物车,goodsId:" + this.goodsId);
       // 1.获取购物车需要展示的信息
       const product = {};
       product.image = this.topImages[0];
@@ -192,7 +192,11 @@ export default {
       product.goodsId = this.goodsId;
 
       // 2.将商品添加到购物车
-      this.$store.commit("addCart", product);
+      // this.$store.commit("addCart", product);
+      this.$store.dispatch("addCart", product).then((res) => {
+        // console.log(res);
+        this.$toast.show(res, 1500);
+      });
     },
   },
   destroyed() {
